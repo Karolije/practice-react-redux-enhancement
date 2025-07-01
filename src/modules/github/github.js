@@ -4,13 +4,19 @@ import types from "./github.types";
 import { fetchRepos } from "./github.actions";
 
 const Github = () => {
-  const username = useSelector((state) => state.username);
-  const filter = useSelector((state) => state.filter);
-  const repos = useSelector((state) => state.repos);
-  const loading = useSelector((state) => state.loading);
-  const error = useSelector((state) => state.error);
-
   const dispatch = useDispatch();
+
+  const username = useSelector((state) =>
+    state.github ? state.github.username : ""
+  );
+  const filter = useSelector((state) => state.github?.filter ?? "");
+  const repos = useSelector((state) => state.github?.repos ?? []);
+  const loading = useSelector((state) =>
+    state.github ? state.github.loading : false
+  );
+  const error = useSelector((state) =>
+    state.github ? state.github.error : null
+  );
 
   const handleUsernameChange = (e) => {
     dispatch({ type: types.SET_USERNAME, payload: e.target.value });
@@ -20,13 +26,13 @@ const Github = () => {
     dispatch({ type: types.SET_FILTER, payload: e.target.value });
   };
   useEffect(() => {
-    if (username.trim().length > 0) {
+    if (username.trim()) {
       dispatch(fetchRepos(username));
     }
   }, [username, dispatch]);
 
   const filteredRepos = repos.filter((repo) =>
-    repo.name.toLowerCase().includes(filter.toLowerCase())
+    repo.name?.toLowerCase().includes(filter.trim().toLowerCase())
   );
 
   return (

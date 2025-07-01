@@ -7,18 +7,14 @@ const initialState = {
   loading: false,
   error: null,
 };
-const reducer = (state = initialState, action) => {
+const githubReducer = (state = initialState, action) => {
   switch (action.type) {
     case types.SET_USERNAME:
       return {
         ...state,
         username: action.payload,
       };
-    case types.SET_FILTER:
-      return {
-        ...state,
-        filter: action.payload,
-      };
+
     case types.SET_FILTER:
       return {
         ...state,
@@ -47,4 +43,4 @@ const reducer = (state = initialState, action) => {
   }
 };
 
-export default reducer;
+export default githubReducer;
